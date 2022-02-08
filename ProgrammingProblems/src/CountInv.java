@@ -45,6 +45,7 @@ public class CountInv {
         int i = 0;
         int j = 0;
         int k = 0;
+        int mid = inputArray.length/2;
 
         //compare the elements in left and right half
         while(i < left.length && j < right.length){
@@ -60,7 +61,7 @@ public class CountInv {
             else{
                 inputArray[k] = right[j];
                 j++;
-                numInv++;
+                numInv += mid-i;
             }
 
             k++;
@@ -74,7 +75,6 @@ public class CountInv {
             inputArray[k] = left[i];
             i++;
             k++;
-            numInv++;
         }
 
         //the remaining values in right side were the greatest and no inversions should be counted
