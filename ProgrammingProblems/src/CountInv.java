@@ -39,7 +39,9 @@ public class CountInv {
                 k++;
             }
 
-            //else if the 
+            //else if the value in the right array is greater than the element in the left array
+            //we merge the value from the right side and iterate the number of inversions by the
+            //current midpoint - the current i position
             else{
                 array[k] = rightHalf[j];
                 k++;
@@ -48,21 +50,26 @@ public class CountInv {
             }
         }
 
+        //fills in the rest of the values from the left half
         while(i < leftHalf.length){
             array[k] = leftHalf[i];
             k++;
             i++;
         }
 
+        //fills in the rest of the values from the right half
         while(j < rightHalf.length){
             array[k] = rightHalf[j];
             k++;
             j++;
         }
 
+        //return the number of inversions from this call
         return numInv;
+
     }
 
+    //merge sort, and count the number of inversions
     private static int sortAndCount(int[] inputArray, int start, int end){
         int numInv = 0;
 
