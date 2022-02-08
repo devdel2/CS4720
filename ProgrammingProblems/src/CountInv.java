@@ -4,14 +4,13 @@ public class CountInv {
         int[] array = {54044,14108,79294,29649,25260,60660,2995,53777,49689,9083};
         printArray(array);
         System.out.println();
-        System.out.println(splitArray(array));
+        System.out.println(sortAndCount(array, 0, array.length-1));
         System.out.println();
         printArray(array);
     }
 
-    static int splitArray(int[] array){
+    static int countAndMerge(int[] array, int start, int end, int mid){
         int numInv = 0;
-        int mid = (array.length) / 2;
         int[] leftHalf = new int[mid];
         int[] rightHalf = new int[array.length-mid];
 
@@ -30,60 +29,51 @@ public class CountInv {
             rightHalf[i-mid] = array[i];
         }
 
-        //continue to split array until base case reached
-        splitArray(leftHalf);
-        splitArray(rightHalf);
+        int i = 0;
+        int j = 0;
+        int k = start;
 
-        //uses merge sort to count total number of inversions
-        numInv += countInv(array, leftHalf, rightHalf);
+        while(i < leftHalf.length && j < rightHalf.length){
+            if(leftHalf[i] <= rightHalf[j]){
+                array[k] = leftHalf[i];
+                i++;
+                k++;
+            }
+            else{
+                array[k] = rightHalf[j];
+                k++;
+                j++;
+                numInv += (mid+1) - (start +  i);
+            }
+        }
+
+        while(i < leftHalf.length){
+            array[k] = leftHalf[i];
+            k++;
+            i++;
+        }
+
+        while(j < rightHalf.length){
+            array[k] = rightHalf[j];
+            k++;
+            j++;
+        }
 
         return numInv;
     }
 
-    private static int countInv(int[] inputArray, int[] left, int[] right){
+    private static int sortAndCount(int[] inputArray, int start, int end){
         int numInv = 0;
-        int i = 0;
-        int j = 0;
-        int k = 0;
-        int mid = inputArray.length/2;
 
-        //compare the elements in left and right half
-        while(i < left.length && j < right.length){
 
-            //if left array element is less than right array element, add to input array
-            if(left[i] <= right[j]){
-                inputArray[k] = left[i];
-                i++;
-            }
-
-            //if right array element is greater than left array element, add right to input array
-            //this means there was inversion, iterate inversion variable by 1
-            else{
-                inputArray[k] = right[j];
-                j++;
-                numInv += mid-i;
-            }
-
-            k++;
-
+        if(start < end){
+            int mid = (start + end)/2;
+            numInv += sortAndCount(inputArray, start, mid);
+            numInv += sortAndCount(inputArray, mid+1, end);
+            numInv += countAndMerge(inputArray, start, end, mid);
         }
 
-        //if right array finished copying to input array before left side
-        //each element in the remaining left side counts as an inversion
-        //copy remaining elements and increment num of inversions
-        while(i < left.length){
-            inputArray[k] = left[i];
-            i++;
-            k++;
-        }
 
-        //the remaining values in right side were the greatest and no inversions should be counted
-        //copy remaining values to the input array
-        while(j < right.length){
-            inputArray[k] = right[j];
-            j++;
-            k++;
-        }
 
         //return the number of inversions;
         return numInv;
