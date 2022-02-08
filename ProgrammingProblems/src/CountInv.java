@@ -2,11 +2,15 @@ public class CountInv {
 
     public static void main(String[] args) {
         int[] array = {54044,14108,79294,29649,25260,60660,2995,53777,49689,9083};
+        printArray(array);
+        System.out.println();
         System.out.println(splitArray(array));
+        System.out.println();
+        printArray(array);
     }
 
     static int splitArray(int[] array){
-        int numInv;
+        int numInv = 0;
         int mid = (array.length) / 2;
         int[] leftHalf = new int[mid];
         int[] rightHalf = new int[array.length-mid];
@@ -31,7 +35,7 @@ public class CountInv {
         splitArray(rightHalf);
 
         //uses merge sort to count total number of inversions
-        numInv = countInv(array, leftHalf, rightHalf);
+        numInv += countInv(array, leftHalf, rightHalf);
 
         return numInv;
     }
@@ -46,7 +50,7 @@ public class CountInv {
         while(i < left.length && j < right.length){
 
             //if left array element is less than right array element, add to input array
-            if(left[i] <= right[i]){
+            if(left[i] <= right[j]){
                 inputArray[k] = left[i];
                 i++;
             }
@@ -83,6 +87,13 @@ public class CountInv {
 
         //return the number of inversions;
         return numInv;
+    }
+
+    //print array
+    private static void printArray(int[] array){
+        for(int i =0; i < array.length; i++){
+            System.out.println(array[i]);
+        }
     }
 
 }
